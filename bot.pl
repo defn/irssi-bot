@@ -1,7 +1,8 @@
 use strict;
+
 use Irssi;
 
-sub info {
+sub botinfo {
   my ($template) = shift;
   my ($msg) = sprintf $template, @_;
 
@@ -9,21 +10,23 @@ sub info {
 }
 
 sub event_notice {
-  my ($server, $from_msg, $nick, $addr) = @_;
+  my ($server, $data, $nick, $addr) = @_;
+  my ($target, $text) = split(/ :/, $data, 2);
 
-  info '%s: %s (%s) %s', $server, $nick, $addr, $from_msg;
+  botinfo '%s (%s) %s: %s', $nick, $addr, $target, $text;
 }
 
 sub event_privmsg {
-  my ($server, $from_msg, $nick, $addr) = @_;
+  my ($server, $data, $nick, $addr) = @_;
+  my ($target, $text) = split(/ :/, $data, 2);
 
-  info '%s: %s (%s) %s', $server, $nick, $addr, $from_msg;
+  botinfo '%s (%s) %s: %s', $nick, $addr, $target, $text;
 }
 
 sub bot {
-  my ($cli, $server, $from) = @_;
+  my ($data, $server, $witem) = @_;
 
-  info '%s: %s: %s', $server, $from, $cli;
+  botinfo '%s: %s', $witem, $data;
 }
 
 sub main {
